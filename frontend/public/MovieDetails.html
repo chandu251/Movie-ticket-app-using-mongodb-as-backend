@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Details</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .back-btn {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 15px;
+      background: blue;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Movie Details</h2>
+  <div id="movie"></div>
+  <a href="index.html" class="back-btn">⬅ Back</a>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const movieId = urlParams.get("movieId");
+
+    async function loadMovie() {
+      const res = await fetch(`http://localhost:5000/api/movies/${movieId}`);
+      const movie = await res.json();
+      document.getElementById("movie").innerHTML = `
+        <h3>${movie.title}</h3>
+        <p><b>Genre:</b> ${movie.genre}</p>
+        <p><b>Description:</b> ${movie.description}</p>
+      `;
+    }
+
+    loadMovie();
+  </script>
+</body>
+</html>

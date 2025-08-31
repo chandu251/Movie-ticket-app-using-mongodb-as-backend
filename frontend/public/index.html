@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Ticket App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: rgb(177, 35, 35);
+    }
+    .movie-card {
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      background-color: rgba(1, 1, 186, 0.625);
+    }
+    .movie-card h3 {
+      margin: 0 0 10px 0;
+    }
+    .movie-card button {
+      margin-right: 10px;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .book-btn {
+      background: green;
+      color: white;
+    }
+    .details-btn {
+      background: blue;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <!-- <h2>All Movies</h2> -->
+  <div id="root"></div>
+  
+  <!-- <div id="movies"></div> -->
+
+  <script>
+    async function fetchMovies() {
+      try {
+        const res = await fetch("http://localhost:5001/api/movies"); // adjust if backend runs on another port
+        const movies = await res.json();
+        const moviesDiv = document.getElementById("movies");
+
+        if (movies.length === 0) {
+          moviesDiv.innerHTML = "<p>No movies found</p>";
+          return;
+        }
+
+        moviesDiv.innerHTML = movies.map(movie => `
+          <div class="movie-card">
+            <h3>${movie.title} (${movie.genre})</h3>
+            <p>${movie.description}</p>
+            <button class="book-btn" onclick="bookTicket('${movie._id}')">Book Ticket</button>
+            <button class="details-btn" onclick="viewDetails('${movie._id}')">View Details</button>
+          </div>
+        `).join("");
+      } catch (err) {
+        console.error("Error fetching movies", err);
+      }
+    }
+
+    function bookTicket(movieId) {
+      // alert("Booking ticket for movie ID: " + movieId);
+      // Later → redirect to BookTicket.html?movieId=...
+      window.location.href = `BookTicket.html?movieId=${movieId}`;
+    }
+
+    function viewDetails(movieId) {
+      // alert("Viewing details for movie ID: " + movieId);
+      // Later → redirect to MovieDetails.html?movieId=...
+      window.location.href = `MovieDetails.html?movieId=${movieId}`;
+    }
+
+    fetchMovies();
+  </script>
+</body>
+</html>
